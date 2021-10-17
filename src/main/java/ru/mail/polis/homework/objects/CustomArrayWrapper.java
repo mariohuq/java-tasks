@@ -93,12 +93,15 @@ public class CustomArrayWrapper implements Iterable<Integer> {
     }
 
     private class SubSequenceIterator implements Iterator<Integer> {
-        private final int step;
         private int position;
+        private final int step;
         private final int fixedModCount = modCount;
 
-        public SubSequenceIterator(int begin, int step) {
-            this.position = begin;
+        /**
+         * @param position start position of subsequence
+         */
+        public SubSequenceIterator(int position, int step) {
+            this.position = position;
             this.step = step;
         }
 
