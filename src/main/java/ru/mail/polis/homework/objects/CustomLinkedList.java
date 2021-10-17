@@ -17,7 +17,7 @@ public class CustomLinkedList {
      * @param value - data for create Node.
      */
     public void add(int value) {
-        if (head == null) {
+        if (isEmpty()) {
             head = new Node(value);
             last = head;
             length++;
@@ -88,6 +88,9 @@ public class CustomLinkedList {
      */
     @Override
     public String toString() {
+        if (isEmpty()) {
+            return NULL_ITEM;
+        }
         StringBuilder builder = new StringBuilder();
         for (Node current = head; current != null; current = current.next) {
             builder.append(current.value);
@@ -95,6 +98,10 @@ public class CustomLinkedList {
         }
         builder.append(NULL_ITEM);
         return builder.toString();
+    }
+
+    private boolean isEmpty() {
+        return head == null;
     }
 
     private static class Node {
