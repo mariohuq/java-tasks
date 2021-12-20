@@ -126,7 +126,7 @@ public class StructureInputStream extends FileInputStream {
     }
 
     private byte readByte() throws IOException {
-        return (byte) (readUnsignedByte() - 128);
+        return (byte) readUnsignedByte();
     }
 
     private int readUnsignedByte() throws IOException {

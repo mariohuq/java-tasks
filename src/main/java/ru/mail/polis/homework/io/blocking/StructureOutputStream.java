@@ -32,7 +32,7 @@ public class StructureOutputStream extends FileOutputStream {
         bits <<= 1;
         bits |= cast(structure.isFlag1());
         write(bits);
-        writeByte(structure.getParam());
+        write(structure.getParam());
     }
 
     /**
@@ -109,10 +109,6 @@ public class StructureOutputStream extends FileOutputStream {
 
     private void writeBoolean(boolean value) throws IOException {
         write(cast(value));
-    }
-
-    private void writeByte(byte value) throws IOException {
-        write(value + 128);
     }
 
     private int cast(boolean value) {
