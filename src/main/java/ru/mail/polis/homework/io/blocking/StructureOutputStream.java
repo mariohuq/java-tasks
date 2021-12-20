@@ -23,6 +23,11 @@ public class StructureOutputStream extends FileOutputStream {
         writeNullableString(structure.getName());
         writeNullableSubstructures(structure.getSubStructures());
         writeFloat(structure.getCoeff());
+        writeFlags(structure);
+        write(structure.getParam());
+    }
+
+    private void writeFlags(Structure structure) throws IOException {
         int bits = 0;
         bits |= cast(structure.isFlag4());
         bits <<= 1;
@@ -32,7 +37,6 @@ public class StructureOutputStream extends FileOutputStream {
         bits <<= 1;
         bits |= cast(structure.isFlag1());
         write(bits);
-        write(structure.getParam());
     }
 
     /**

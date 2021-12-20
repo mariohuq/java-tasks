@@ -30,20 +30,24 @@ public class StructureInputStream extends FileInputStream {
             result.setName(readNullableString());
             result.setSubStructures(readNullableSubstructures());
             result.setCoeff(readFloat());
-            int bits = readUnsignedByte();
-            result.setFlag1(cast(bits));
-            bits >>= 1;
-            result.setFlag2(cast(bits));
-            bits >>= 1;
-            result.setFlag3(cast(bits));
-            bits >>= 1;
-            result.setFlag4(cast(bits));
+            readFlags(result);
             result.setParam(readByte());
             structures.add(result);
             return result;
         } catch (EOFException e) {
             return null;
         }
+    }
+
+    private void readFlags(Structure result) throws IOException {
+        int bits = readUnsignedByte();
+        result.setFlag1(cast(bits));
+        bits >>= 1;
+        result.setFlag2(cast(bits));
+        bits >>= 1;
+        result.setFlag3(cast(bits));
+        bits >>= 1;
+        result.setFlag4(cast(bits));
     }
 
     /**
