@@ -63,17 +63,18 @@ public class StructureOutputStream extends FileOutputStream {
     }
 
     private void writeNullableSubstructures(SubStructure[] values) throws IOException {
-        writeBoolean(values != null);
-        if (values != null) {
-            writeSubstructures(values);
+        if (values == null) {
+            writeInt(-1);
+            return;
         }
-    }
-
-    private void writeSubstructures(SubStructure[] values) throws IOException {
         writeInt(values.length);
         for (SubStructure value : values) {
             writeNullableSubstructure(value);
         }
+    }
+
+    private void writeSubstructures(SubStructure[] values) throws IOException {
+        writeNullableSubstructures(Objects.requireNonNull(values));
     }
 
     private void writeNullableSubstructure(SubStructure value) throws IOException {

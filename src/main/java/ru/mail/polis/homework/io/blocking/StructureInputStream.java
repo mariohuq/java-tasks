@@ -78,18 +78,19 @@ public class StructureInputStream extends FileInputStream {
     }
 
     private SubStructure[] readNullableSubstructures() throws IOException {
-        if (!readBoolean()) {
+        int length = readInt();
+        if (length < 0) {
             return null;
         }
-        return readSubstructures();
-    }
-
-    private SubStructure[] readSubstructures() throws IOException {
-        final SubStructure[] result = new SubStructure[readInt()];
+        final SubStructure[] result = new SubStructure[length];
         for (int i = 0; i < result.length; i++) {
             result[i] = readNullableSubstructure();
         }
         return result;
+    }
+
+    private SubStructure[] readSubstructures() throws IOException {
+        return Objects.requireNonNull(readNullableSubstructures());
     }
 
     private SubStructure readNullableSubstructure() throws IOException {
