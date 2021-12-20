@@ -89,10 +89,6 @@ public class StructureInputStream extends FileInputStream {
         return result;
     }
 
-    private SubStructure[] readSubstructures() throws IOException {
-        return Objects.requireNonNull(readNullableSubstructures());
-    }
-
     private SubStructure readNullableSubstructure() throws IOException {
         if (!readBoolean()) {
             return null;
@@ -126,11 +122,7 @@ public class StructureInputStream extends FileInputStream {
     }
 
     private boolean readBoolean() throws IOException {
-        int bits = read();
-        if (bits < 0) {
-            throw new EOFException();
-        }
-        return cast(bits);
+        return cast(readUnsignedByte());
     }
 
     private byte readByte() throws IOException {
