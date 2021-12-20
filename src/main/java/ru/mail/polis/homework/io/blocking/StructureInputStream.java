@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Вам нужно реализовать StructureInputStream, который умеет читать данные из файла.
@@ -65,10 +66,15 @@ public class StructureInputStream extends FileInputStream {
     }
 
     private String readNullableString() throws IOException {
-        if (!readBoolean()) {
+        int length = readInt();
+        if (length < 0) {
             return null;
         }
-        return readString();
+        byte[] bytes = new byte[length];
+        if (read(bytes) != bytes.length) {
+            throw new EOFException();
+        }
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     private SubStructure[] readNullableSubstructures() throws IOException {
@@ -106,11 +112,7 @@ public class StructureInputStream extends FileInputStream {
     }
 
     private String readString() throws IOException {
-        byte[] bytes = new byte[readInt()];
-        if (read(bytes) != bytes.length) {
-            throw new EOFException();
-        }
-        return new String(bytes, StandardCharsets.UTF_8);
+        return Objects.requireNonNull(readNullableString());
     }
 
 

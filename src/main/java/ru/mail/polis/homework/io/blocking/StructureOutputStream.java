@@ -2,6 +2,7 @@ package ru.mail.polis.homework.io.blocking;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * Вам нужно реализовать StructureOutputStream, который умеет писать данные в файл.
@@ -52,10 +53,13 @@ public class StructureOutputStream extends FileOutputStream {
     }
 
     private void writeNullableString(String value) throws IOException {
-        writeBoolean(value != null);
-        if (value != null) {
-            writeString(value);
+        if (value == null) {
+            writeInt(-1);
+            return;
         }
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        writeInt(bytes.length);
+        write(bytes);
     }
 
     private void writeNullableSubstructures(SubStructure[] values) throws IOException {
@@ -95,9 +99,7 @@ public class StructureOutputStream extends FileOutputStream {
     }
 
     private void writeString(String value) throws IOException {
-        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
-        writeInt(bytes.length);
-        write(bytes);
+        writeNullableString(Objects.requireNonNull(value));
     }
 
     private void writeDouble(double value) throws IOException {
